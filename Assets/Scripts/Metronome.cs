@@ -26,23 +26,26 @@ public class Metronome : MonoBehaviour
         {
             if (AudioSettings.dspTime >= nextTick) 
             {
-                RegisterTick();
-                mainAudioSource.Play();
+                if (RegisterTick())
+                    mainAudioSource.Play();
+                ticksPlayed++;
                 nextTick += bpmInSeconds;
             }
 
             if (noteSubdivision)
-            {
                 subdivisionAudioSource.Play();
-            }
 
             nextSubdivisionTick += bpmInSeconds/2;
         }
     }
 
-    private void RegisterTick() {
+    private bool RegisterTick() {
         mainAudioSource.clip = (ticksPlayed % metric == 0 ? altTick : mainTick);
-        ticksPlayed++;
+
+        if (noteSubdivision && ticksPlayed % metric != 0)
+            return false;
+
+        return true;
     }
 
     public void StartMetronome() {
