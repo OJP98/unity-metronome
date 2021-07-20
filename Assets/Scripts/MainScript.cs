@@ -48,4 +48,9 @@ public class MainScript : MonoBehaviour
         int inputValue = Convert.ToInt32(inputField.text);
         metronome.BPM = inputValue;
     }
+
+    public void HandleToggleData(bool val)
+    {
+        metronome.NoteSubdivision = val;
+    }
 }

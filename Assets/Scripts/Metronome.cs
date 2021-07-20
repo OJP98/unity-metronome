@@ -5,32 +5,43 @@ using UnityEngine;
 public class Metronome : MonoBehaviour
 {
     public double bpm = 120.0F;
-    public double bpmInSeconds;
     public AudioClip mainTick, altTick;
-    private double nextTick = 0.0F;
-    private bool isPlaying = false;
-    private AudioSource audioSource;
+    private double bpmInSeconds;
+    private double nextTick = 0.0F, nextSubdivisionTick = 0.0F;
+    private bool isPlaying = false, noteSubdivision = false;
+    public AudioSource mainAudioSource, subdivisionAudioSource;
     private int metric = 4, ticksPlayed = 0;
 
     void Start()
     {
         bpmInSeconds = 60 / bpm;
         nextTick = AudioSettings.dspTime + bpmInSeconds;
-        audioSource = GetComponent<AudioSource>();
+        nextSubdivisionTick = nextTick/2;
     }
 
     void Update()
     {
-        while (AudioSettings.dspTime >= nextTick && isPlaying) {
 
-            RegisterTick();
-            audioSource.Play();
-            nextTick += bpmInSeconds;
+        while (isPlaying && AudioSettings.dspTime >= nextSubdivisionTick)
+        {
+            if (AudioSettings.dspTime >= nextTick) 
+            {
+                RegisterTick();
+                mainAudioSource.Play();
+                nextTick += bpmInSeconds;
+            }
+
+            if (noteSubdivision)
+            {
+                subdivisionAudioSource.Play();
+            }
+
+            nextSubdivisionTick += bpmInSeconds/2;
         }
     }
 
     private void RegisterTick() {
-        audioSource.clip = (ticksPlayed % metric == 0 ? altTick : mainTick);
+        mainAudioSource.clip = (ticksPlayed % metric == 0 ? altTick : mainTick);
         ticksPlayed++;
     }
 
@@ -62,5 +73,11 @@ public class Metronome : MonoBehaviour
 
             bpmInSeconds = 60 / bpm;
         }
+    }
+
+    public bool NoteSubdivision
+    {
+        get { return noteSubdivision; }
+        set { noteSubdivision = value; }
     }
 }
