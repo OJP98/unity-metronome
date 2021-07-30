@@ -36,13 +36,15 @@ public class MusicGeneratorScript : MonoBehaviour
 
     private void GenerateRandomSubdivision(int key)
     {
+        Debug.Log(key);
         List<int> result = new List<int>();
         List<int> values = new List<int>{ 2, 3 };
 
-        for (int i = 0; i <= key + 1; i++)
+        int sum = 0;
+        for (int i = 0; i < 10; i++)
         {
-            int sum = result.Sum();
-            if (sum <= key)
+            sum = result.Sum();
+            if (sum < key)
             {
                 int rand = values[Random.Range(0, values.Count)];
                 if (rand + sum <= key)
