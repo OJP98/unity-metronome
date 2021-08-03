@@ -11,6 +11,7 @@ public class Metronome : MonoBehaviour
     private bool isPlaying = false, noteSubdivision = false;
     public AudioSource mainAudioSource, subdivisionAudioSource;
     private int metric = 4, ticksPlayed = 0;
+    private List<int> key = new List<int>();
 
     void Start()
     {
@@ -22,6 +23,17 @@ public class Metronome : MonoBehaviour
     void Update()
     {
 
+        if (key.Count > 0)
+            PlayMusic();
+        else 
+        {
+            PlayMetronome();
+        }
+
+    }
+
+    private void PlayMetronome()
+    {
         while (isPlaying && AudioSettings.dspTime >= nextSubdivisionTick)
         {
             if (AudioSettings.dspTime >= nextTick) 
@@ -37,6 +49,27 @@ public class Metronome : MonoBehaviour
 
             nextSubdivisionTick += bpmInSeconds/2;
         }
+    }
+
+    private void PlayMusic()
+    {
+
+        while (isPlaying && AudioSettings.dspTime >= nextTick)
+        {
+            if (EvalNextTick())
+                mainAudioSource.Play();
+            subdivisionAudioSource.Play();
+            ticksPlayed++;
+            double div = metric >= 4 ? metric/4 : 1.25;
+            nextTick += bpmInSeconds/div;
+        }
+
+    }
+
+    private bool EvalNextTick()
+    {
+        // Debug.Log(key[ticksPlayed]);
+        return key[ticksPlayed%metric] == 1 ? true : false ;
     }
 
     private bool RegisterTick() {
@@ -71,7 +104,7 @@ public class Metronome : MonoBehaviour
         set
         {
             if (value < 0) bpm = 0;
-            else if (value > 999) bpm = 999;
+            else if (value > 300) bpm = 300;
             else bpm = value;
 
             bpmInSeconds = 60 / bpm;
@@ -82,5 +115,11 @@ public class Metronome : MonoBehaviour
     {
         get { return noteSubdivision; }
         set { noteSubdivision = value; }
+    }
+
+    public List<int> Key
+    {
+        get { return key; }
+        set { key = value; }
     }
 }

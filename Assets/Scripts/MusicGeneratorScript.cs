@@ -2,28 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MusicGeneratorScript : MonoBehaviour
 {
-    public int subdivision_amount, subdivision_base;
+    int subdivision_amount, subdivision_base;
+    public Text metricLbl, keyLbl, FillingLbl;
     public List<int[]> metrics = new List<int[]>(){
         new[] {3,4},
         new[] {4,4}
     };
     public int[] metric;
-
+    public Metronome metronome;
     void Start()
     {
         // Random.seed = 1234;
-        metric = RandomMetric;
-        int key = GenerateKey(metric);
-        GenerateRandomSubdivision(key);
+        GenerateMusic();
     }
 
-    private int GenerateKey(int[] metric)
+    public void GenerateMusic()
     {
-        int subdivision_amount = metric[0];
-        int subdivision_base = metric[1];
+        metric = RandomMetric;
+        int rythm = GenerateRythm(metric);
+        List<int> key = GenerateRandomKey(rythm);
+        List<int> filling = GenerateFilling(key, rythm);
+        metronome.Metric = rythm;
+        metronome.Key = filling;
+        Debug.Log(rythm);
+        Debug.Log(string.Join(",", filling.ToArray()));
+    }
+
+    private int GenerateRythm(int[] metric)
+    {
+        subdivision_amount = metric[0];
+        subdivision_base = metric[1];
 
         List<int> subdivion_options = new List<int>{
             subdivision_amount,
@@ -31,12 +43,13 @@ public class MusicGeneratorScript : MonoBehaviour
             subdivision_amount*4
         };
 
+        metricLbl.text = "Metric: " + subdivision_amount + "/" + subdivision_base;
         return subdivion_options[Random.Range(0, subdivion_options.Count)];
     }
 
-    private void GenerateRandomSubdivision(int key)
+
+    private List<int> GenerateRandomKey(int key)
     {
-        Debug.Log(key);
         List<int> result = new List<int>();
         List<int> values = new List<int>{ 2, 3 };
 
@@ -52,14 +65,32 @@ public class MusicGeneratorScript : MonoBehaviour
             }
             else break;
         }
-        foreach (var item in result)
+
+        int[] arrayOfItems = result.ToArray();
+        keyLbl.text = "Clave: [" + string.Join(",", arrayOfItems) + "] en 1/" + key;
+
+        return result;
+    }
+
+    private List<int> GenerateFilling(List<int> key, int sub_key)
+    {
+        List<int> result = new List<int>();
+        
+        foreach (var k in key)
         {
-            Debug.Log(item);
+            if (k == 3) result.AddRange(new List<int>{0, 1, 1});
+            else if (k == 2) result.AddRange(new List<int>{0, 1});
         }
+
+        while (result.Count < sub_key)
+            result.Add(Random.Range(0, 1));
+
+        FillingLbl.text = "Filling: [" + string.Join(",", result.ToArray()) + "]";
+
+        return result;
     }
 
     private int[] RandomMetric => metrics[Random.Range(0, metrics.Count)];
-
 
     /* FROM HERE ARE ALL FUNCTIONS THAT I PROBABLY WON'T USE */
     private int GetSubdivisionBase() => Random.Range(3, 4);
