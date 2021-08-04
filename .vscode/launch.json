@@ -1,0 +1,19 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+     "name": "Unity Editor",
+     "type": "unity",
+     "request": "launch",
+     "processId": "<path-to-project>/Library/EditorInstance.json"
+ 		},
+		{
+			"name": "Attach to Debugger",
+			"type": "clr",
+			"request": "attach",
+			"processName": "UnityDebug.exe",
+			"justMyCode": false,
+			"requireExactSource": false,
+		}
+	]
+}

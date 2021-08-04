@@ -9,9 +9,9 @@ public class Metronome : MonoBehaviour
     private double bpmInSeconds;
     private double nextTick = 0.0F, nextSubdivisionTick = 0.0F;
     private bool isPlaying = false, noteSubdivision = false;
-    public AudioSource mainAudioSource, subdivisionAudioSource;
+    public AudioSource mainAudioSource, secondaryAudioSource, subdivisionAudioSource;
     private int metric = 4, ticksPlayed = 0;
-    private List<int> key = new List<int>();
+    private List<int> key = new List<int>(), iKey = new List<int>();
 
     void Start()
     {
@@ -56,8 +56,11 @@ public class Metronome : MonoBehaviour
 
         while (isPlaying && AudioSettings.dspTime >= nextTick)
         {
-            if (EvalNextTick())
+            if (EvalMainTick())
                 mainAudioSource.Play();
+            else if (EvalSecondaryTick())
+                secondaryAudioSource.Play();
+
             subdivisionAudioSource.Play();
             ticksPlayed++;
             double div = metric >= 4 ? metric/4 : 1.25;
@@ -66,10 +69,14 @@ public class Metronome : MonoBehaviour
 
     }
 
-    private bool EvalNextTick()
+    private bool EvalMainTick()
     {
-        // Debug.Log(key[ticksPlayed]);
         return key[ticksPlayed%metric] == 1 ? true : false ;
+    }
+
+    private bool EvalSecondaryTick()
+    {
+        return iKey[ticksPlayed%metric] == 1 ? false : true ;
     }
 
     private bool RegisterTick() {
@@ -88,6 +95,17 @@ public class Metronome : MonoBehaviour
     
     public void StopMetronome() {
         isPlaying = false;
+    }
+
+    public void InvertArray(List<int> list) 
+    {
+        iKey = new List<int>(list);
+        int amount = Random.Range(0, list.Count);
+        for (int i = 0; i < amount; i++)
+        {
+            int pos = Random.Range(0, list.Count);
+            iKey[pos] = (list[pos] == 1) ? 0 : 1;
+        }
     }
 
     public int Metric {
@@ -120,6 +138,10 @@ public class Metronome : MonoBehaviour
     public List<int> Key
     {
         get { return key; }
-        set { key = value; }
+        set
+        { 
+            key = value;
+            InvertArray(value);
+        }
     }
 }

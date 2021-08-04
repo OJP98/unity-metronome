@@ -26,10 +26,10 @@ public class MusicGeneratorScript : MonoBehaviour
         int rythm = GenerateRythm(metric);
         List<int> key = GenerateRandomKey(rythm);
         List<int> filling = GenerateFilling(key, rythm);
+        Debug.Log(string.Join(",", filling.ToArray()));
         metronome.Metric = rythm;
         metronome.Key = filling;
         Debug.Log(rythm);
-        Debug.Log(string.Join(",", filling.ToArray()));
     }
 
     private int GenerateRythm(int[] metric)
