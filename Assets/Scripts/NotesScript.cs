@@ -16,7 +16,7 @@ public class NotesScript : MonoBehaviour
         Debug.Log("LOS ACORDES SON:");
         List<Chord> chords = Chords(scale);
         foreach (Chord chord in chords)
-            Debug.Log(string.Join(", ", chord.notes) + " - " + chord.chordType);
+            Debug.Log(chord.GetNotes() + " " + chord.chordType);
     }
 
     string[] MajorScale(int index)
@@ -40,48 +40,31 @@ public class NotesScript : MonoBehaviour
 
         for (int i = 0; i < 7; i++)
         {
-            string[] chordNotes = {
-                scale[i],
-                scale[(i+2)%7],
-                scale[(i+4)%7]
+            string note1 = scale[i];
+            string note2 = scale[(i+2)%7];
+            string note3 = scale[(i+4)%7];
+
+            int noteIndex1 = Array.IndexOf(notes, note1);
+            int noteIndex2 = Array.IndexOf(notes, note2);
+            int noteIndex3 = Array.IndexOf(notes, note3);
+
+            if (noteIndex1 > noteIndex2) noteIndex2 += 12;
+            if (noteIndex2 > noteIndex3) noteIndex3 += 12;
+
+            Note[] chordNotes = {
+                new Note(note1, noteIndex1),
+                new Note(note2, noteIndex2),
+                new Note(note3, noteIndex3)
             };
 
-            int noteIndex1 = Array.IndexOf(notes, chordNotes[0]);
-            int noteIndex2 = Array.IndexOf(notes, chordNotes[1]);
-            int noteIndex3 = Array.IndexOf(notes, chordNotes[2]);
+            int range1 = Math.Abs(noteIndex2 - noteIndex1);
+            int range2 = Math.Abs(noteIndex3 - noteIndex2);
 
-            int range1 = (noteIndex2 - noteIndex1) % 6;
-            int range2 = (noteIndex3 - noteIndex2) % 6;
-
-            string chordType = GetChordType(range1, range2);
-
-            Chord chord = new Chord(chordNotes, range1, range2, chordType);
+            Chord chord = new Chord(chordNotes, range1, range2);
             chords.Add(chord);
         }
 
+        Array.Reverse(notes);
         return chords;
-    }
-
-    private string GetChordType(int range1, int range2)
-    {
-        Debug.Log(range1 + " " + range2);
-        range1 = Math.Abs(range1);
-        range2 = Math.Abs(range2);
-
-        if (range1 > 4) range1 %= 4;
-        if (range2 > 4) range2 %= 4;
-        if (range1 == 4 && range2 == 3)
-            return "Major";
-        
-        if (range1 == 3 && range2 == 4)
-            return "Minor";
-
-        if (range1 == 3 && range2 == 3)
-            return "Diminished";
-        
-        if (range1 == 4 && range2 == 4)
-            return "Augmented";
-        
-        return "None";
     }
 }
