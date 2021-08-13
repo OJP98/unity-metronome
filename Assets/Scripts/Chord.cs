@@ -25,7 +25,7 @@ namespace lab_metronomo.Assets.Scripts
             }
             this.chordType = GetChordType();
         }
-        private string GetChordType()
+        public string GetChordType()
         {
             if (range1 == 4 && range2 == 3)
                 return "Major";

@@ -6,17 +6,18 @@ using lab_metronomo.Assets.Scripts;
 public class NotesScript : MonoBehaviour
 {
     private string[] notes = {"do", "do#", "re", "re#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si"};
-    public int initialNote = 2;
+    [SerializeField]
+    public int grado;
+    public int initialNote;
 
-    // Start is called before the first frame update
     void Start()
     {
         string[] scale = MajorScale(initialNote);
-        Debug.Log("LA ESCALA ES: " + string.Join(", ", scale));
-        Debug.Log("LOS ACORDES SON:");
         List<Chord> chords = Chords(scale);
-        foreach (Chord chord in chords)
-            Debug.Log(chord.GetNotes() + " " + chord.chordType);
+
+        Debug.Log(notes[initialNote]);
+        Debug.Log(chords[grado - 1].GetNotes() + " - " + chords[grado - 1].GetChordType());
+        Debug.Log(Function(grado));
     }
 
     string[] MajorScale(int index)
@@ -63,8 +64,20 @@ public class NotesScript : MonoBehaviour
             Chord chord = new Chord(chordNotes, range1, range2);
             chords.Add(chord);
         }
-
-        Array.Reverse(notes);
         return chords;
+    }
+
+    string Function(int grado)
+    {
+        if (grado == 1 || grado == 3 || grado == 6)
+            return "Tónica";
+        
+        if (grado == 2 || grado == 4)
+            return "Subdominante";
+        
+        if (grado == 5)
+            return "Dominante";
+
+        return "???";
     }
 }
