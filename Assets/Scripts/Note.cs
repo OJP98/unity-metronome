@@ -1,8 +1,6 @@
-using UnityEngine;
-
 namespace lab_metronomo.Assets.Scripts
 {
-    public class Note
+  public class Note
     {
         public string noteName;
         public bool isFlat;

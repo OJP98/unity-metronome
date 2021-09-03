@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MusicGeneratorScript : MonoBehaviour
 {
+    private List<int> randomKeyValues = new List<int>{2, 3};
     int subdivision_amount, subdivision_base;
     public Text metricLbl, keyLbl, FillingLbl;
     public List<int[]> metrics = new List<int[]>(){
@@ -24,7 +25,7 @@ public class MusicGeneratorScript : MonoBehaviour
     {
         metric = RandomMetric;
         int rythm = GenerateRythm(metric);
-        List<int> key = GenerateRandomKey(rythm);
+        List<int> key = GenerateRandomKey(rythm, randomKeyValues);
         List<int> filling = GenerateFilling(key, rythm);
         Debug.Log(string.Join(",", filling.ToArray()));
         metronome.Metric = rythm;
@@ -48,10 +49,9 @@ public class MusicGeneratorScript : MonoBehaviour
     }
 
 
-    private List<int> GenerateRandomKey(int key)
+    private List<int> GenerateRandomKey(int key, List<int> randomValues)
     {
         List<int> result = new List<int>();
-        List<int> values = new List<int>{ 2, 3 };
 
         int sum = 0;
         for (int i = 0; i < 10; i++)
@@ -59,7 +59,7 @@ public class MusicGeneratorScript : MonoBehaviour
             sum = result.Sum();
             if (sum < key)
             {
-                int rand = values[Random.Range(0, values.Count)];
+                int rand = randomValues[Random.Range(0, randomValues.Count)];
                 if (rand + sum <= key)
                     result.Add(rand);
             }
