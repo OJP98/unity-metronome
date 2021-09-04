@@ -24,6 +24,8 @@ public class ProgressionGeneratorScript : MonoBehaviour
         Debug.Log(utils.PrintIntList(compaces));
 
         acordes = GenerateChordList(compaces);
+        foreach (Chord acorde in acordes)
+            Debug.Log(acorde.GetData());
     }
 
     private List<int> SubdividirCompas(List<int> compaces) {
@@ -59,8 +61,7 @@ public class ProgressionGeneratorScript : MonoBehaviour
     private List<Chord> GenerateChordList(List<int> durationList) {
         List<Chord> result = new List<Chord>();
         int listCount = durationList.Count;
-        int prevDuration = 1;
-        bool prevIsStrong = false;
+        Chord prevChord = null;
 
         for (int i = 0; i < listCount; i++)
         {
@@ -68,18 +69,35 @@ public class ProgressionGeneratorScript : MonoBehaviour
             bool isStrong = true;
 
             // Is the last chord duration same as this one?
-            if (duration % prevDuration == 0 && prevIsStrong)
+            if (prevChord != null && duration % prevChord.duration == 0 && prevChord.isStrong)
                 isStrong = false;
 
             // Create a new chord and add it to the list
+            // remember this constructor assigns duration and function
             Chord chord = new Chord(duration, isStrong);
+
+            if (i == listCount - 1)
+                chord.AssignPropertiesToLastChord();
+            
             result.Add(chord);
 
-            // Save the previous values
-            prevDuration = duration;
-            prevIsStrong = isStrong;
+            // Check if we have two dominants in a row
+            CheckPreviousFunctionTone(prevChord, chord);
+            prevChord = chord;
         }
-        result[listCount - 1].AssignPropertiesToLastChord();
         return result;
+    }
+
+    private void CheckPreviousFunctionTone(Chord previousChord, Chord currentChord)
+    {
+        if (previousChord == null)
+            return;
+
+        // If last chord is weak and is dominant
+        if (previousChord.function == Function.Dominante)
+        {
+            previousChord.function = Function.Subdominante;
+            previousChord.grade = previousChord.ReturnRandomGrade();
+        }
     }
 }
