@@ -11,7 +11,6 @@ namespace lab_metronomo.Assets.Scripts
         Major, Minor, Diminished, Augmented, None
     }
 
-
     public class Chord
     {
         public List<int> gradoTonicas = new List<int>{1, 3, 6};
@@ -115,7 +114,9 @@ namespace lab_metronomo.Assets.Scripts
 
         public string GetNotes()
         {
-            return notes[0].noteName + ", " + notes[1].noteName + ", " + notes[2].noteName;
+            return notes[0].noteName 
+                + ", " + notes[1].noteName 
+                + ", " + notes[2].noteName;
         }
 
         public string GetData()

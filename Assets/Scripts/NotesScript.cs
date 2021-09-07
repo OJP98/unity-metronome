@@ -5,37 +5,37 @@ using lab_metronomo.Assets.Scripts;
 
 public class NotesScript : MonoBehaviour
 {
-    private string[] notes = {"do", "do#", "re", "re#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si"};
+    private string[] noteNames = {"do", "do#", "re", "re#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si"};
     [SerializeField]
     public int grado;
     public int initialNote;
 
     void Start()
     {
-        string[] scale = MajorScale(initialNote);
-        List<Chord> chords = Chords(scale);
+        string[] scale = MajorScaleFromIndex(initialNote);
+        List<Chord> chords = ListOfChordsFromScale(scale);
 
-        Debug.Log(notes[initialNote]);
+        Debug.Log(noteNames[initialNote]);
         Debug.Log(chords[grado - 1].GetNotes() + " - " + chords[grado - 1].GetChordType());
-        Debug.Log(Function(grado));
+        Debug.Log(GetFunctionFromGrade(grado));
     }
 
-    string[] MajorScale(int index)
+    public string[] MajorScaleFromIndex(int index)
     {
         string[] resNotes = {
-            notes[index],
-            notes[(index+2)%12],
-            notes[(index+4)%12],
-            notes[(index+5)%12],
-            notes[(index+7)%12],
-            notes[(index+9)%12],
-            notes[(index+11)%12]
+            noteNames[index],
+            noteNames[(index+2)%12],
+            noteNames[(index+4)%12],
+            noteNames[(index+5)%12],
+            noteNames[(index+7)%12],
+            noteNames[(index+9)%12],
+            noteNames[(index+11)%12]
         };
 
         return resNotes;
     }
 
-    List<Chord> Chords(string[] scale)
+    public List<Chord> ListOfChordsFromScale(string[] scale)
     {
         List<Chord> chords = new List<Chord>();
 
@@ -45,9 +45,9 @@ public class NotesScript : MonoBehaviour
             string note2 = scale[(i+2)%7];
             string note3 = scale[(i+4)%7];
 
-            int noteIndex1 = Array.IndexOf(notes, note1);
-            int noteIndex2 = Array.IndexOf(notes, note2);
-            int noteIndex3 = Array.IndexOf(notes, note3);
+            int noteIndex1 = Array.IndexOf(noteNames, note1);
+            int noteIndex2 = Array.IndexOf(noteNames, note2);
+            int noteIndex3 = Array.IndexOf(noteNames, note3);
 
             if (noteIndex1 > noteIndex2) noteIndex2 += 12;
             if (noteIndex2 > noteIndex3) noteIndex3 += 12;
@@ -67,17 +67,17 @@ public class NotesScript : MonoBehaviour
         return chords;
     }
 
-    string Function(int grado)
+    Function GetFunctionFromGrade(int grado)
     {
         if (grado == 1 || grado == 3 || grado == 6)
-            return "Tónica";
+            return Function.Tonica;
         
         if (grado == 2 || grado == 4)
-            return "Subdominante";
+            return Function.Subdominante;
         
         if (grado == 5)
-            return "Dominante";
+            return Function.Dominante;
 
-        return "???";
+        return Function.None;
     }
 }
