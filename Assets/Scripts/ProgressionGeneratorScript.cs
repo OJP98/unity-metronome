@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ProgressionGeneratorScript : MonoBehaviour
 {
-    private Utils utils = new Utils();
+    private Utils utils;
     private List<int> tiemposCompletos = new List<int>{1, 2, 4};
     // Para una metrica 3/4, esto debería de ser 2 y 3
     private List<int> tiemposDivididos = new List<int>{2, 4};
@@ -14,8 +14,14 @@ public class ProgressionGeneratorScript : MonoBehaviour
     private int MAX_NEGRAS; 
     private List<int> compaces;
     private List<Chord> acordes;
+    private int initialNote;
+    private string[] majorScale;
 
     void Start() {
+        // initialNote = Random.Range(0, 13);
+        initialNote = 0;
+        utils = new Utils(initialNote);
+
         MAX_NEGRAS = CANT_COMPASES * NEGRAS_POR_COMPAS;
         compaces = utils.GenerateRandomKey(CANT_COMPASES, tiemposCompletos);
         Debug.Log(utils.PrintIntList(compaces));
@@ -24,8 +30,12 @@ public class ProgressionGeneratorScript : MonoBehaviour
         Debug.Log(utils.PrintIntList(compaces));
 
         acordes = GenerateChordList(compaces);
-        foreach (Chord acorde in acordes)
+        foreach (Chord acorde in acordes) {
+            Note[] notes = utils.GetChordFromGrade(acorde.grade);
+            acorde.notes = notes;
             Debug.Log(acorde.GetData());
+            Debug.Log(acorde.GetNotes());
+        }
     }
 
     private List<int> SubdividirCompas(List<int> compaces) {
