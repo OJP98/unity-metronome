@@ -6,7 +6,7 @@ namespace lab_metronomo.Assets.Scripts
 {
   public class Utils
     {
-        private int TOTAL_NOTES;
+        private int TOTAL_NOTES = 12;
         public string[] NOTE_NAMES = {"do", "do#", "re", "re#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si"};
         public string[] majorScale;
         public int initialNote;
@@ -16,7 +16,6 @@ namespace lab_metronomo.Assets.Scripts
         {
             this.initialNote = initialNote;
             this.majorScale = GetMajorScaleFromInitialNote(this.initialNote);
-            this.TOTAL_NOTES = this.NOTE_NAMES.Length;
         }
 
         public List<int> GenerateRandomKey(int maxValue, List<int> randomValues)

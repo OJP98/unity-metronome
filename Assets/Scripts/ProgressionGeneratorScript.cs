@@ -13,7 +13,7 @@ public class ProgressionGeneratorScript : MonoBehaviour
     private int NEGRAS_POR_COMPAS = 4;
     private int MAX_NEGRAS; 
     private List<int> compaces;
-    private List<Chord> acordes;
+    private List<Rythm> ritmos;
     private int initialNote;
     private string[] majorScale;
 
@@ -29,12 +29,14 @@ public class ProgressionGeneratorScript : MonoBehaviour
         compaces = SubdividirCompas(compaces);
         Debug.Log(utils.PrintIntList(compaces));
 
-        acordes = GenerateChordList(compaces);
-        foreach (Chord acorde in acordes) {
+        ritmos = GenerateRythmList(compaces);
+        foreach (Rythm ritmo in ritmos) {
+            Chord acorde = ritmo.chord;
             Note[] notes = utils.GetChordFromGrade(acorde.grade);
             acorde.notes = notes;
-            Debug.Log(acorde.GetData());
-            Debug.Log(acorde.GetNotes());
+            Debug.Log(ritmo.LogRythm());
+            // Debug.Log(acorde.GetData());
+            // Debug.Log(acorde.GetNotes());
         }
     }
 
@@ -68,10 +70,10 @@ public class ProgressionGeneratorScript : MonoBehaviour
         return result;
     }
 
-    private List<Chord> GenerateChordList(List<int> durationList) {
-        List<Chord> result = new List<Chord>();
+    private List<Rythm> GenerateRythmList(List<int> durationList) {
+        List<Rythm> result = new List<Rythm>();
         int listCount = durationList.Count;
-        Chord prevChord = null;
+        Rythm prevRythm = null;
 
         for (int i = 0; i < listCount; i++)
         {
@@ -79,21 +81,22 @@ public class ProgressionGeneratorScript : MonoBehaviour
             bool isStrong = true;
 
             // Is the last chord duration same as this one?
-            if (prevChord != null && duration % prevChord.duration == 0 && prevChord.isStrong)
+            if (prevRythm != null && duration % prevRythm.duration == 0 && prevRythm.isStrong)
                 isStrong = false;
 
             // Create a new chord and add it to the list
             // remember this constructor assigns duration and function
-            Chord chord = new Chord(duration, isStrong);
+            Chord chord = new Chord(isStrong);
+            Rythm rythm = new Rythm(duration, isStrong, chord);
 
             if (i == listCount - 1)
-                chord.AssignPropertiesToLastChord();
+                rythm.AssignPropertiesToLastRythm();
             
-            result.Add(chord);
 
             // Check if we have two dominants in a row
-            CheckPreviousFunctionTone(prevChord, chord);
-            prevChord = chord;
+            CheckPreviousFunctionTone(prevRythm != null ? prevRythm.chord : null, chord);
+            prevRythm = rythm;
+            result.Add(rythm);
         }
         return result;
     }
@@ -103,8 +106,10 @@ public class ProgressionGeneratorScript : MonoBehaviour
         if (previousChord == null)
             return;
 
+
         // If last chord is weak and is dominant
-        if (previousChord.function == Function.Dominante)
+        if (previousChord.function == Function.Dominante
+            && currentChord.function == Function.Dominante)
         {
             previousChord.function = Function.Subdominante;
             previousChord.grade = previousChord.ReturnRandomGrade();

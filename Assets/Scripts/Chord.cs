@@ -13,9 +13,9 @@ namespace lab_metronomo.Assets.Scripts
 
     public class Chord
     {
-        public List<int> gradoTonicas = new List<int>{1, 3, 6};
-        public List<int> gradoSudominantes = new List<int>{2, 4};
-        public int gradoDominante = 5;
+        private List<int> GRADO_TONICAS = new List<int>{1, 3, 6};
+        private List<int> GRADO_SUBDOMINANTES = new List<int>{2, 4};
+        private int GRADO_DOMINANTE = 5;
         public Note[] notes;
         public int range1;
         public int range2;
@@ -23,8 +23,6 @@ namespace lab_metronomo.Assets.Scripts
         public bool isFlat;
         public int grade;
         public Function function;
-        public int duration;
-        public bool isStrong;
 
         public Chord(Note[] notes, int range1, int range2)
         {
@@ -42,11 +40,12 @@ namespace lab_metronomo.Assets.Scripts
             this.chordType = GetChordType();
         }
 
-        public Chord(int duration, bool isStrong) 
+        public Chord(bool isStrong) 
         {
-            this.duration = duration;
-            this.isStrong = isStrong;
-            this.function = ReturnFunctionType();
+            if (isStrong)
+                this.function = ReturnStrongFunction();
+            else
+                this.function = ReturnWeakFunction();
             this.grade = ReturnRandomGrade();
         }
 
@@ -68,20 +67,22 @@ namespace lab_metronomo.Assets.Scripts
         }
 
         public void AssignPropertiesToLastChord() {
-            this.isStrong = false;
             this.function = Function.Dominante;
-            this.grade = gradoDominante;
+            this.grade = GRADO_DOMINANTE;
         }
 
-        private Function ReturnFunctionType()
+        private Function ReturnStrongFunction()
         {
             Function[] strongFunctions = {Function.Tonica, Function.Subdominante};
-            Function[] weakFunctions = {Function.Dominante, Function.Subdominante};
-
             int rand = Random.Range(0, 2);
-            if (this.isStrong)
-                return strongFunctions[rand];
+            return strongFunctions[rand];
 
+        }
+
+        private Function ReturnWeakFunction()
+        {
+            Function[] weakFunctions = {Function.Dominante, Function.Subdominante};
+            int rand = Random.Range(0, 2);
             return weakFunctions[rand];
         }
 
@@ -98,18 +99,18 @@ namespace lab_metronomo.Assets.Scripts
         {
             // Random between 0 - 2
             int rand = Random.Range(0, 3);
-            return gradoTonicas[rand];
+            return GRADO_TONICAS[rand];
         }
         private int GetRandomSubdominantGrade()
         {
             // Random between 0 - 1
             int rand = Random.Range(0, 2);
-            return gradoSudominantes[rand];
+            return GRADO_SUBDOMINANTES[rand];
         }
         private int GetRandomDominantGrade()
         {
             // Will return 5 cause thats the only grade for dominant 
-            return gradoDominante;
+            return GRADO_DOMINANTE;
         }
 
         public string GetNotes()
@@ -121,7 +122,7 @@ namespace lab_metronomo.Assets.Scripts
 
         public string GetData()
         {
-            return this.duration + " " + this.isStrong + " " + this.function + " " + this.grade;
+            return function + " " + this.grade;
         }
 
     }
