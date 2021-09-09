@@ -17,14 +17,17 @@ public class ProgressionGeneratorScript : MonoBehaviour
     private int initialNote;
     private string[] majorScale;
 
-    void Start() {
+    void Start() { }
+
+    public List<Rythm> GetRythmList()
+    {
         // initialNote = Random.Range(0, 13);
         initialNote = 0;
         utils = new Utils(initialNote);
 
         MAX_NEGRAS = CANT_COMPASES * NEGRAS_POR_COMPAS;
         compaces = utils.GenerateRandomKey(CANT_COMPASES, tiemposCompletos);
-        Debug.Log(utils.PrintIntList(compaces));
+        // Debug.Log(utils.PrintIntList(compaces));
 
         compaces = SubdividirCompas(compaces);
         Debug.Log(utils.PrintIntList(compaces));
@@ -35,9 +38,9 @@ public class ProgressionGeneratorScript : MonoBehaviour
             Note[] notes = utils.GetChordFromGrade(acorde.grade);
             acorde.notes = notes;
             Debug.Log(ritmo.LogRythm());
-            // Debug.Log(acorde.GetData());
-            // Debug.Log(acorde.GetNotes());
         }
+
+        return ritmos;
     }
 
     private List<int> SubdividirCompas(List<int> compaces) {
