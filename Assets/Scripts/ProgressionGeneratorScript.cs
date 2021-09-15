@@ -9,10 +9,10 @@ public class ProgressionGeneratorScript : MonoBehaviour
     private List<int> tiemposCompletos = new List<int>{1, 2, 4};
     // Para una metrica 3/4, esto debería de ser 2 y 3
     private List<int> tiemposDivididos = new List<int>{2, 4};
-    private int CANT_COMPASES = 8;
+    private int CANT_COMPACES = 8;
     private int NEGRAS_POR_COMPAS = 4;
     private int MAX_NEGRAS; 
-    private List<int> compaces;
+    private List<int> compas1, compas2, compaces;
     private List<Rythm> ritmos;
     private int initialNote;
     private string[] majorScale;
@@ -21,16 +21,20 @@ public class ProgressionGeneratorScript : MonoBehaviour
 
     public List<Rythm> GetRythmList()
     {
-        // initialNote = Random.Range(0, 13);
-        initialNote = 0;
+        initialNote = Random.Range(0, 12);
+        // initialNote = 0;
         utils = new Utils(initialNote);
 
-        MAX_NEGRAS = CANT_COMPASES * NEGRAS_POR_COMPAS;
-        compaces = utils.GenerateRandomKey(CANT_COMPASES, tiemposCompletos);
-        // Debug.Log(utils.PrintIntList(compaces));
+        MAX_NEGRAS = CANT_COMPACES * NEGRAS_POR_COMPAS;
+        compas1 = utils.GenerateRandomKey(CANT_COMPACES/2, tiemposCompletos);
+        compas2 = utils.GenerateRandomKey(CANT_COMPACES/2, tiemposCompletos);
 
-        compaces = SubdividirCompas(compaces);
-        Debug.Log(utils.PrintIntList(compaces));
+        compas1 = SubdividirCompas(compas1);
+        compas2 = SubdividirCompas(compas2);
+
+        // We join both compass so we avoid mixed tones
+        compaces = compas1.Concat(compas2).ToList();
+        Debug.Log("Duración acordes (en negras): " + utils.PrintIntList(compaces));
 
         ritmos = GenerateRythmList(compaces);
         foreach (Rythm ritmo in ritmos) {

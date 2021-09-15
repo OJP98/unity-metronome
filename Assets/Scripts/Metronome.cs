@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Metronome : MonoBehaviour
@@ -8,7 +7,7 @@ public class Metronome : MonoBehaviour
     public AudioClip mainTick, altTick;
     private double bpmInSeconds;
     private double nextTick = 0.0F, nextSubdivisionTick = 0.0F;
-    private bool isPlaying = false, noteSubdivision = false;
+    private bool isPlaying = true, noteSubdivision = false;
     public AudioSource mainAudioSource, secondaryAudioSource, subdivisionAudioSource;
     private int metric = 4, ticksPlayed = 0;
     private List<int> key = new List<int>(), iKey = new List<int>();
