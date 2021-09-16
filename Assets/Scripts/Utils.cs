@@ -10,11 +10,13 @@ namespace lab_metronomo.Assets.Scripts
         public string[] NOTE_NAMES = {"do", "do#", "re", "re#", "mi", "fa", "fa#", "sol", "sol#", "la", "la#", "si"};
         public string[] majorScale;
         public int initialNote;
+        public string initalNoteName;
 
 
         public Utils(int initialNote = 0)
         {
             this.initialNote = initialNote;
+            this.initalNoteName = NOTE_NAMES[initialNote];
             this.majorScale = GetMajorScaleFromInitialNote(this.initialNote);
         }
 

@@ -6,21 +6,32 @@ public class Beat : MonoBehaviour
 {
     public PianoPlayer pianoPlayer;
     public DrumPlayer drumPlayer;
+    public MainMelodyScript mainMelody;
     public double bpm = 120.0F;
     private double bpmInSeconds;
     private double nextTick = 0.0F;
     private bool isPlaying = true;
-    private int metric = 4, ticksPlayed = 0;
+    private int[] metricOptions = new int[] {4, 3};
+    private int metric;
 
-    void Start()
+    void Awake()
     {
+        NewMelody();
         bpmInSeconds = 60 / bpm;
         nextTick = AudioSettings.dspTime + bpmInSeconds;
-        isPlaying = true;
     }
 
     void Update() {
         PlayBeat();
+    }
+
+    public void NewMelody()
+    {
+        metric = metricOptions[Random.Range(0,2)];
+
+        pianoPlayer.GenerateRythm(metric);
+        drumPlayer.GenerateRythm(metric);
+        mainMelody.SetLabels(drumPlayer, pianoPlayer, metric.ToString());
     }
 
     private void PlayBeat()
@@ -29,8 +40,27 @@ public class Beat : MonoBehaviour
         {
             pianoPlayer.NextTick();
             drumPlayer.NextTick();
-            ticksPlayed += 1;
             nextTick += bpmInSeconds;
+        }
+    }
+
+    public void Play()
+    {
+        isPlaying = true;
+    }
+
+    public void Stop()
+    {
+        isPlaying = false;
+    }
+
+    public double BPM
+    {
+        get { return bpm; }
+        set
+        {
+            bpm = value;
+            bpmInSeconds = 60 / bpm;
         }
     }
 }

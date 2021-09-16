@@ -17,12 +17,21 @@ public class ProgressionGeneratorScript : MonoBehaviour
     private int initialNote;
     private string[] majorScale;
 
-    void Start() { }
-
-    public List<Rythm> GetRythmList()
+    public List<Rythm> GetRythmList(int metric)
     {
+
+        if (metric == 4)
+        {
+            tiemposDivididos = new List<int>{2, 4};
+            NEGRAS_POR_COMPAS = 4;
+        }
+        else 
+        {
+            tiemposDivididos = new List<int>{3, 3};
+            NEGRAS_POR_COMPAS = 3;
+        }
+
         initialNote = Random.Range(0, 12);
-        // initialNote = 0;
         utils = new Utils(initialNote);
 
         MAX_NEGRAS = CANT_COMPACES * NEGRAS_POR_COMPAS;
@@ -66,15 +75,23 @@ public class ProgressionGeneratorScript : MonoBehaviour
                 continue;
             }
 
-            // Decide wether we devide in 2 o 4
+            // Decide wether we divide in 2 o 4
             int randomIndex = Random.Range(0, 2);
             int subdivisions = tiemposDivididos[randomIndex];
             // Add the number n times
             result.AddRange(
-                Enumerable.Repeat((subdivisions == 4 ? 1 : 2), subdivisions)
+                Enumerable.Repeat(GetMinimumSubdivision(subdivisions), subdivisions)
             );
         }
         return result;
+    }
+
+    private int GetMinimumSubdivision(int subdivisions)
+    {
+        if (subdivisions == 3 || subdivisions == 4)
+            return 1;
+        
+        return 2;
     }
 
     private List<Rythm> GenerateRythmList(List<int> durationList) {
@@ -122,4 +139,7 @@ public class ProgressionGeneratorScript : MonoBehaviour
             previousChord.grade = previousChord.ReturnRandomGrade();
         }
     }
+
+    public string ChordsDurationString => utils.PrintIntList(compaces);
+    public string BaseNote => utils.initalNoteName;
 }

@@ -11,10 +11,11 @@ public class PianoPlayer : MonoBehaviour
     private List<Rythm> rythmList;
     private Rythm currentRythm;
 
-    void Start()
+    public void GenerateRythm(int metric)
     {
-        rythmList = progressionGenerator.GetRythmList();
+        rythmList = progressionGenerator.GetRythmList(metric);
         currentRythm = rythmList[0];
+        ticksPlayed = 0;
     }
 
     public void NextTick() 
@@ -25,10 +26,13 @@ public class PianoPlayer : MonoBehaviour
         }
 
         if (ticksPlayed == 0)
-            PlaySound();
+            PlayPiano();
         
         ticksPlayed++;
     }
+
+    public string ChordsDuration => progressionGenerator.ChordsDurationString;
+    public string BaseNote => progressionGenerator.BaseNote;
 
     private void ChangeCurrentRythm()
     {
@@ -36,9 +40,9 @@ public class PianoPlayer : MonoBehaviour
         currentRythm = rythmList[currentIndex];
     }
 
-    private void PlaySound() {
+    private void PlayPiano() {
         SetPitchFromNotes(currentRythm.chord.notes);
-        PlayChord();
+        PlayNotes();
     }
 
     private void SetPitchFromNotes(Note[] notes) {
@@ -47,7 +51,7 @@ public class PianoPlayer : MonoBehaviour
         note3.pitch = notes[2].freq;
     }
 
-    private void PlayChord() {
+    private void PlayNotes() {
         note1.Play();
         note2.Play();
         note3.Play();

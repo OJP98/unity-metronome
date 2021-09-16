@@ -21,16 +21,17 @@ public class MusicGeneratorScript : MonoBehaviour
         // GenerateMusic();
     }
 
-    public void GenerateMusic()
+    public List<int> GenerateMusic(int newMetric)
     {
-        metric = RandomMetric;
+        if (newMetric == 4)
+            metric = new[] {4, 4};
+        else
+            metric = new[] {3, 4};
+
         int rythm = GenerateRythm(metric);
         List<int> key = GenerateRandomKey(rythm, randomKeyValues);
         List<int> filling = GenerateFilling(key, rythm);
-        Debug.Log(string.Join(",", filling.ToArray()));
-        // metronome.Metric = rythm;
-        // metronome.Key = filling;
-        Debug.Log(rythm);
+        return filling;
     }
 
     public int GenerateRythm(int[] metric)
