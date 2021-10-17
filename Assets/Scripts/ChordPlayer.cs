@@ -55,4 +55,9 @@ public class ChordPlayer : MonoBehaviour
         note2.Play();
         note3.Play();
     }
+
+    public List<Rythm> RythmList
+    {
+        get { return rythmList; }
+    }
 }

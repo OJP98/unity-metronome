@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class Beat : MonoBehaviour
 {
-    public ChordPlayer pianoPlayer;
+    public ChordPlayer chordPlayer;
     public DrumPlayer drumPlayer;
+    public MelodyPlayer melodyPlayer;
     public LabelsScript mainLabels;
     public double bpm = 120.0F;
     private double bpmInSeconds;
@@ -27,17 +28,19 @@ public class Beat : MonoBehaviour
     {
         metric = metricOptions[Random.Range(0,2)];
 
-        pianoPlayer.GenerateRythm(metric);
+        chordPlayer.GenerateRythm(metric);
         drumPlayer.GenerateRythm(metric);
-        mainLabels.SetLabels(drumPlayer, pianoPlayer, metric.ToString());
+        melodyPlayer.GenerateMelody(metric, chordPlayer.RythmList);
+        mainLabels.SetLabels(drumPlayer, chordPlayer, metric.ToString());
     }
 
     private void PlayBeat()
     {
         while (isPlaying && AudioSettings.dspTime >= nextTick)
         {
-            pianoPlayer.NextTick();
+            chordPlayer.NextTick();
             drumPlayer.NextTick();
+            melodyPlayer.NextTick();
             nextTick += bpmInSeconds;
         }
     }
