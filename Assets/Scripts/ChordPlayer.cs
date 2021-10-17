@@ -5,14 +5,14 @@ using UnityEngine;
 public class ChordPlayer : MonoBehaviour
 {
     public AudioSource note1, note2, note3;
-    public ProgressionGeneratorScript progressionGenerator;
+    public RythmGeneratorScript rythmGenerator;
     private int currentIndex = 0, ticksPlayed = 0;
     private List<Rythm> rythmList;
     private Rythm currentRythm;
 
     public void GenerateRythm(int metric)
     {
-        rythmList = progressionGenerator.GetRythmList(metric);
+        rythmList = rythmGenerator.GetRythmList(metric);
         currentRythm = rythmList[0];
         ticksPlayed = 0;
     }
@@ -30,8 +30,8 @@ public class ChordPlayer : MonoBehaviour
         ticksPlayed++;
     }
 
-    public string ChordsDuration => progressionGenerator.ChordsDurationString;
-    public string BaseNote => progressionGenerator.BaseNote;
+    public string ChordsDuration => rythmGenerator.ChordsDurationString;
+    public string BaseNote => rythmGenerator.BaseNote;
 
     private void ChangeCurrentRythm()
     {

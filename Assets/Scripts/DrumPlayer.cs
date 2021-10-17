@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using lab_metronomo.Assets.Scripts;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class DrumPlayer : MonoBehaviour
@@ -8,13 +6,13 @@ public class DrumPlayer : MonoBehaviour
     private List<int> key = new List<int>();
     private List<int> invertedKey = new List<int>();
     private int ticksPlayed = 0, metric;
-    public MusicGeneratorScript musicGenerator;
+    public BeatGeneratorScript beatGenerator;
     public AudioSource drumAudioSource, snareAudioSource, beatAudioSource; 
 
     public void GenerateRythm(int newMetric)
     {
         metric = newMetric;
-        Key = musicGenerator.GenerateMusic(metric);
+        Key = beatGenerator.GenerateBeat(metric);
         ticksPlayed = 0;
     }
 

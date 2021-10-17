@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class MusicGeneratorScript : MonoBehaviour
+public class BeatGeneratorScript : MonoBehaviour
 {
     private List<int> randomKeyValues = new List<int>{2, 3};
     int subdivision_amount, subdivision_base;
@@ -12,7 +12,7 @@ public class MusicGeneratorScript : MonoBehaviour
     };
     private int[] metric;
 
-    public List<int> GenerateMusic(int newMetric)
+    public List<int> GenerateBeat(int newMetric)
     {
         if (newMetric == 4)
             metric = new[] {4, 4};

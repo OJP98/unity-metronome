@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using lab_metronomo.Assets.Scripts;
 using System.Linq;
 
-public class ProgressionGeneratorScript : MonoBehaviour
+public class RythmGeneratorScript : MonoBehaviour
 {
     private Utils utils;
     private List<int> tiemposCompletos = new List<int>{1, 2, 4};

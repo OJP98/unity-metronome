@@ -928,7 +928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17f14c0ef907b8459af0d806bf808d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicGenerator: {fileID: 1911860887}
+  beatGenerator: {fileID: 1911860887}
   drumAudioSource: {fileID: 1350475207}
   snareAudioSource: {fileID: 1066988558}
   beatAudioSource: {fileID: 1219679268}
@@ -2980,7 +2980,7 @@ GameObject:
   - component: {fileID: 1911860886}
   - component: {fileID: 1911860887}
   m_Layer: 0
-  m_Name: MusicGenerator
+  m_Name: BeatGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3009,7 +3009,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1911860885}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0febd6dfc07ff74cb2a6f466a0dd67a, type: 3}
+  m_Script: {fileID: 11500000, guid: 77f2b997a0ad07c40ae19778f2ebc60e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1918759480
@@ -3044,7 +3044,7 @@ MonoBehaviour:
   note1: {fileID: 1242324551}
   note2: {fileID: 125879547}
   note3: {fileID: 2053024781}
-  progressionGenerator: {fileID: 2146409731}
+  rythmGenerator: {fileID: 2146409731}
 --- !u!4 &1918759482
 Transform:
   m_ObjectHideFlags: 0
@@ -3278,7 +3278,7 @@ GameObject:
   - component: {fileID: 2146409732}
   - component: {fileID: 2146409731}
   m_Layer: 0
-  m_Name: ProgressionGenerator
+  m_Name: RythmGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3293,7 +3293,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2146409730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dfae5c298122cf489ce9ec905125b10, type: 3}
+  m_Script: {fileID: 11500000, guid: 7251d5a218eb5f044aade5fa1d2c58ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &2146409732
