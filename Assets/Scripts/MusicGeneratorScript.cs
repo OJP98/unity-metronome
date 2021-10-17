@@ -1,25 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MusicGeneratorScript : MonoBehaviour
 {
     private List<int> randomKeyValues = new List<int>{2, 3};
     int subdivision_amount, subdivision_base;
-    public Text metricLbl, keyLbl, FillingLbl;
     public List<int[]> metrics = new List<int[]>(){
         new[] {3,4},
         new[] {4,4}
     };
     private int[] metric;
-    // public Metronome metronome;
-    void Start()
-    {
-        // Random.seed = 1234;
-        // GenerateMusic();
-    }
 
     public List<int> GenerateMusic(int newMetric)
     {
@@ -45,7 +36,6 @@ public class MusicGeneratorScript : MonoBehaviour
             subdivision_amount*4
         };
 
-        // metricLbl.text = "Metric: " + subdivision_amount + "/" + subdivision_base;
         return subdivion_options[Random.Range(0, subdivion_options.Count)];
     }
 
@@ -68,7 +58,6 @@ public class MusicGeneratorScript : MonoBehaviour
         }
 
         int[] arrayOfItems = result.ToArray();
-        // keyLbl.text = "Clave: [" + string.Join(",", arrayOfItems) + "] en 1/" + key;
 
         return result;
     }
@@ -85,8 +74,6 @@ public class MusicGeneratorScript : MonoBehaviour
 
         while (result.Count < sub_key)
             result.Add(Random.Range(0, 1));
-
-        // FillingLbl.text = "Filling: [" + string.Join(",", result.ToArray()) + "]";
 
         return result;
     }

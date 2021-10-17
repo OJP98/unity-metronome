@@ -1,12 +1,10 @@
 using UnityEngine;
-using lab_metronomo.Assets.Scripts;
-using System.Collections.Generic;
 
 public class Beat : MonoBehaviour
 {
-    public PianoPlayer pianoPlayer;
+    public ChordPlayer pianoPlayer;
     public DrumPlayer drumPlayer;
-    public MainMelodyScript mainMelody;
+    public LabelsScript mainLabels;
     public double bpm = 120.0F;
     private double bpmInSeconds;
     private double nextTick = 0.0F;
@@ -31,7 +29,7 @@ public class Beat : MonoBehaviour
 
         pianoPlayer.GenerateRythm(metric);
         drumPlayer.GenerateRythm(metric);
-        mainMelody.SetLabels(drumPlayer, pianoPlayer, metric.ToString());
+        mainLabels.SetLabels(drumPlayer, pianoPlayer, metric.ToString());
     }
 
     private void PlayBeat()

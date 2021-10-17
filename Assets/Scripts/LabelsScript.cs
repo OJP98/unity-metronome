@@ -1,20 +1,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using lab_metronomo.Assets.Scripts;
 
-public class MainMelodyScript : MonoBehaviour
+public class LabelsScript : MonoBehaviour
 {
     public Text metricLbl, fillingLbl, chordDurationLbl, scaleNoteLbl;
     public Beat beat;
-    private Utils utils;
-    private DrumPlayer drumPlayer;
-    private PianoPlayer pianoPlayer;
-    private ProgressionGeneratorScript pg;
     public InputField inputField; 
-    private string scaleNote, chordDurationString, drumFilling, metric;
 
-    public void SetLabels(DrumPlayer drumPlayer, PianoPlayer pianoPlayer, string metric)
+    public void SetLabels(DrumPlayer drumPlayer, ChordPlayer pianoPlayer, string metric)
     {
         metricLbl.text = "Metrica: " + metric + "/4";
         fillingLbl.text = "Relleno: " + string.Join(",", drumPlayer.Key);

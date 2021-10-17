@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainScript : MonoBehaviour
+public class HandleInput : MonoBehaviour
 {
     public Metronome metronome;
     public InputField inputField; 

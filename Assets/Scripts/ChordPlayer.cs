@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using lab_metronomo.Assets.Scripts;
 using UnityEngine;
 
-public class PianoPlayer : MonoBehaviour
+public class ChordPlayer : MonoBehaviour
 {
     public AudioSource note1, note2, note3;
     public ProgressionGeneratorScript progressionGenerator;

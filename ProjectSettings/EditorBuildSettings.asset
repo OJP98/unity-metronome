@@ -6,7 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MusicGenerator.unity
+    path: Assets/Scenes/ChordGenerator.unity
+    guid: 6e91e4d28d3646d45bdb42bf7cd741c4
+  - enabled: 0
+    path: Assets/Scenes/BeatGenerator.unity
     guid: 64c1c888db5eb25438fad4581011b186
   - enabled: 0
     path: Assets/Scenes/Metronome.unity
