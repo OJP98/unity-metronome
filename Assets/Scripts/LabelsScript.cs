@@ -12,7 +12,10 @@ public class LabelsScript : MonoBehaviour
     {
         metricLbl.text = "Metrica: " + metric + "/4";
         fillingLbl.text = "Relleno: " + string.Join(",", drumPlayer.Key);
-        chordDurationLbl.text = "Duración acordes: " + pianoPlayer.ChordsDuration;
+        chordDurationLbl.text = $@"Duración de acordes:
+  Sección A: {pianoPlayer.ChordsDuration[0]}
+  Sección B: {pianoPlayer.ChordsDuration[1]}
+        ";
         scaleNoteLbl.text = "Nota base: " + pianoPlayer.BaseNote;
     }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using lab_metronomo.Assets.Scripts;
 using UnityEngine;
 
@@ -9,10 +10,28 @@ public class ChordPlayer : MonoBehaviour
     private int currentIndex = 0, ticksPlayed = 0;
     private List<Rythm> rythmList;
     private Rythm currentRythm;
+    private List<string> chordsDuration;
 
-    public void GenerateRythm(int metric)
+    public void GenerateSong(int metric)
     {
-        rythmList = rythmGenerator.GetRythmList(metric);
+        chordsDuration = new List<string>();
+
+        Debug.Log("Sección A:");
+        List<Rythm> rythm1 = rythmGenerator.GetRythmList(metric);
+        chordsDuration.Add(rythmGenerator.ChordsDurationString);
+
+        Debug.Log("Sección B:");
+        List<Rythm> rythm2 = rythmGenerator.GetRythmList(
+            metric,
+            rythm1.Average(r => r.duration),
+            rythmGenerator.BaseNoteIndex
+        );
+        chordsDuration.Add(rythmGenerator.ChordsDurationString);
+
+        rythmList = rythm1.Concat(rythm2).ToList();
+        rythmList = rythmList.Concat(rythm1).ToList();
+        rythmList = rythmList.Concat(rythm2).ToList();
+
         currentRythm = rythmList[0];
         ticksPlayed = 0;
     }
@@ -30,8 +49,8 @@ public class ChordPlayer : MonoBehaviour
         ticksPlayed++;
     }
 
-    public string ChordsDuration => rythmGenerator.ChordsDurationString;
-    public string BaseNote => rythmGenerator.BaseNote;
+    public List<string> ChordsDuration => chordsDuration;
+    public string BaseNote => rythmGenerator.BaseNoteName;
 
     private void ChangeCurrentRythm()
     {
@@ -54,6 +73,12 @@ public class ChordPlayer : MonoBehaviour
         note1.Play();
         note2.Play();
         note3.Play();
+    }
+
+    public void StopPlaying() {
+        note1.Stop();
+        note2.Stop();
+        note3.Stop();
     }
 
     public List<Rythm> RythmList

@@ -4,7 +4,7 @@ public class Beat : MonoBehaviour
 {
     public ChordPlayer chordPlayer;
     public DrumPlayer drumPlayer;
-    public MelodyPlayer melodyPlayer;
+    // public MelodyPlayer melodyPlayer;
     public LabelsScript mainLabels;
     public double bpm = 120.0F;
     private double bpmInSeconds;
@@ -28,9 +28,9 @@ public class Beat : MonoBehaviour
     {
         metric = metricOptions[Random.Range(0,2)];
 
-        chordPlayer.GenerateRythm(metric);
+        chordPlayer.GenerateSong(metric);
         drumPlayer.GenerateRythm(metric);
-        melodyPlayer.GenerateMelody(metric, chordPlayer.RythmList);
+        // melodyPlayer.GenerateMelody(metric, chordPlayer.RythmList);
         mainLabels.SetLabels(drumPlayer, chordPlayer, metric.ToString());
     }
 
@@ -40,7 +40,7 @@ public class Beat : MonoBehaviour
         {
             chordPlayer.NextTick();
             drumPlayer.NextTick();
-            melodyPlayer.NextTick();
+            // melodyPlayer.NextTick();
             nextTick += bpmInSeconds;
         }
     }
@@ -53,6 +53,7 @@ public class Beat : MonoBehaviour
     public void Stop()
     {
         isPlaying = false;
+        chordPlayer.StopPlaying();
     }
 
     public double BPM

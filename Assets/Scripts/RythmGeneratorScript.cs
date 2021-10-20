@@ -17,21 +17,22 @@ public class RythmGeneratorScript : MonoBehaviour
     private int initialNote;
     private string[] majorScale;
 
-    public List<Rythm> GetRythmList(int metric)
+    public List<Rythm> GetRythmList(int metric, double promedioTiempos = 0, int notaInicial = -1)
     {
-
-        if (metric == 4)
-        {
+        if (metric == 4) {
             tiemposDivididos = new List<int>{2, 4};
             NEGRAS_POR_COMPAS = 4;
-        }
-        else 
-        {
+        } else {
             tiemposDivididos = new List<int>{3, 3};
             NEGRAS_POR_COMPAS = 3;
         }
 
-        initialNote = Random.Range(0, 12);
+        if (promedioTiempos > 0)
+            SetupTiemposCompletos(promedioTiempos);
+
+        if (notaInicial == -1)
+            initialNote = Random.Range(0, 12);
+
         utils = new Utils(initialNote);
 
         MAX_NEGRAS = CANT_COMPACES * NEGRAS_POR_COMPAS;
@@ -54,6 +55,10 @@ public class RythmGeneratorScript : MonoBehaviour
         }
 
         return ritmos;
+    }
+
+    public void SetupTiemposCompletos(double promedioTiempos) {
+        Debug.Log("El promedio es: " + promedioTiempos);
     }
 
     private List<int> SubdividirCompas(List<int> compaces) {
@@ -141,5 +146,6 @@ public class RythmGeneratorScript : MonoBehaviour
     }
 
     public string ChordsDurationString => utils.PrintIntList(compaces);
-    public string BaseNote => utils.initalNoteName;
+    public string BaseNoteName => utils.initalNoteName;
+    public int BaseNoteIndex => utils.initialNote;
 }
