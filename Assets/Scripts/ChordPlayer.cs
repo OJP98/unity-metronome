@@ -28,9 +28,14 @@ public class ChordPlayer : MonoBehaviour
         );
         chordsDuration.Add(rythmGenerator.ChordsDurationString);
 
+        Debug.Log("Sección C:");
+        List<Rythm> rythm3 = rythmGenerator.GetRythmList(metric);
+        chordsDuration.Add(rythmGenerator.ChordsDurationString);
+
         rythmList = rythm1.Concat(rythm2).ToList();
         rythmList = rythmList.Concat(rythm1).ToList();
         rythmList = rythmList.Concat(rythm2).ToList();
+        rythmList = rythmList.Concat(rythm3).ToList();
 
         currentRythm = rythmList[0];
         ticksPlayed = 0;
@@ -39,7 +44,7 @@ public class ChordPlayer : MonoBehaviour
     public void NextTick() 
     {
         if (ticksPlayed == currentRythm.duration) {
-            ChangeCurrentRythm();
+            ChangeCurrentChord();
             ticksPlayed = 0;
         }
 
@@ -52,7 +57,7 @@ public class ChordPlayer : MonoBehaviour
     public List<string> ChordsDuration => chordsDuration;
     public string BaseNote => rythmGenerator.BaseNoteName;
 
-    private void ChangeCurrentRythm()
+    private void ChangeCurrentChord()
     {
         currentIndex = (currentIndex + 1) % rythmList.Count;
         currentRythm = rythmList[currentIndex];

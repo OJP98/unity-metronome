@@ -15,6 +15,8 @@ public class LabelsScript : MonoBehaviour
         chordDurationLbl.text = $@"Duración de acordes:
   Sección A: {pianoPlayer.ChordsDuration[0]}
   Sección B: {pianoPlayer.ChordsDuration[1]}
+  Sección C: {pianoPlayer.ChordsDuration[2]}
+  Orden: A, B, A, B, C
         ";
         scaleNoteLbl.text = "Nota base: " + pianoPlayer.BaseNote;
     }

@@ -19,6 +19,7 @@ public class RythmGeneratorScript : MonoBehaviour
 
     public List<Rythm> GetRythmList(int metric, double promedioTiempos = 0, int notaInicial = -1)
     {
+        tiemposCompletos = new List<int>{2, 4};
         if (metric == 4) {
             tiemposDivididos = new List<int>{2, 4};
             NEGRAS_POR_COMPAS = 4;
@@ -57,8 +58,17 @@ public class RythmGeneratorScript : MonoBehaviour
         return ritmos;
     }
 
-    public void SetupTiemposCompletos(double promedioTiempos) {
-        Debug.Log("El promedio es: " + promedioTiempos);
+    public void SetupTiemposCompletos(double promedioTiempos)
+    {
+        tiemposCompletos = new List<int>{1, 2};
+        Debug.Log("Promedio anterior de acordes: " + promedioTiempos);
+        // List<int> tiempos = new List<int>();
+        // foreach (var tiempo in tiemposCompletos)
+        // {
+        //     if (tiempo <= promedioTiempos)
+        //         tiempos.Add(tiempo);
+        // }
+        // tiemposCompletos = tiempos;
     }
 
     private List<int> SubdividirCompas(List<int> compaces) {
