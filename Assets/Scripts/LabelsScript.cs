@@ -11,7 +11,7 @@ public class LabelsScript : MonoBehaviour
     public void SetLabels(DrumPlayer drumPlayer, ChordPlayer pianoPlayer, string metric)
     {
         metricLbl.text = "Metrica: " + metric + "/4";
-        fillingLbl.text = "Relleno: " + string.Join(",", drumPlayer.Key);
+        fillingLbl.text = drumPlayer.KeysLabelText();
         chordDurationLbl.text = $@"Duración de acordes:
   Sección A: {pianoPlayer.ChordsDuration[0]}
   Sección B: {pianoPlayer.ChordsDuration[1]}
