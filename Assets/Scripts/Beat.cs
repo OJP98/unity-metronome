@@ -4,20 +4,20 @@ public class Beat : MonoBehaviour
 {
     public ChordPlayer chordPlayer;
     public DrumPlayer drumPlayer;
-    // public MelodyPlayer melodyPlayer;
+    public MelodyPlayer melodyPlayer;
     public LabelsScript mainLabels;
     public double bpm = 120.0F;
     private double bpmInSeconds;
     private double nextTick = 0.0F;
-    private bool isPlaying = true;
+    private bool isPlaying = false;
     private int[] metricOptions = new int[] {4, 3};
-    private int metric;
+    private int metric, ticks;
 
     void Awake()
     {
-        NewMelody();
         bpmInSeconds = 60 / bpm;
-        nextTick = AudioSettings.dspTime + bpmInSeconds;
+        nextTick = (AudioSettings.dspTime + bpmInSeconds) / 2;
+        NewMelody();
     }
 
     void Update() {
@@ -27,6 +27,7 @@ public class Beat : MonoBehaviour
     public void NewMelody()
     {
         metric = metricOptions[Random.Range(0,2)];
+        ticks = 0;
 
         chordPlayer.GenerateSong(metric);
         drumPlayer.GenerateRythm(metric);
@@ -38,10 +39,14 @@ public class Beat : MonoBehaviour
     {
         while (isPlaying && AudioSettings.dspTime >= nextTick)
         {
-            chordPlayer.NextTick();
+            ticks++;
+            if (ticks % 2 == 0)
+            {
+                chordPlayer.NextTick();
+                // melodyPlayer.NextTick();
+            }
             drumPlayer.NextTick();
-            // melodyPlayer.NextTick();
-            nextTick += bpmInSeconds;
+            nextTick += bpmInSeconds/2;
         }
     }
 

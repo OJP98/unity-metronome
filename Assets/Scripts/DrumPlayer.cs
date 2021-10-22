@@ -4,21 +4,22 @@ using UnityEngine;
 public class DrumPlayer : MonoBehaviour
 {
     private int MAX_NEGRAS = 32;
-    private List<int> currentKey = new List<int>(), mainKey = null;
+    private List<int> currentKey = new List<int>(), tempKey = null;
     private List<int> alternativeKey = null;
-    private List<int> invertedKey = new List<int>();
-    private int ticksPlayed = 0, metric;
+    private List<int> invertedKey = new List<int>(), invertedAlternativeKey = null;
+    private int ticksPlayed = 0, loops = 0, metric;
     public BeatGeneratorScript beatGenerator;
     public AudioSource drumAudioSource, snareAudioSource, beatAudioSource; 
 
     public void GenerateRythm(int newMetric)
     {
-
+        ticksPlayed = 0;
+        loops = 0;
         metric = newMetric;
-        Key = beatGenerator.GenerateBeat(metric);
         SetMaxTicks();
         GenerateAlternativeFilling();
-        ticksPlayed = 0;
+        currentKey = beatGenerator.GenerateBeat(metric);
+        invertedKey = InvertArray(currentKey);
     }
 
     public void NextTick() 
@@ -27,7 +28,6 @@ public class DrumPlayer : MonoBehaviour
         {
             ticksPlayed = 0;
             CheckAlternativeFilling();
-            Debug.Log("Ahora cambiando de ritmo!!");
         }
 
         if (EvalDrumHit)
@@ -45,8 +45,8 @@ public class DrumPlayer : MonoBehaviour
             return $@"Relleno: {string.Join(",", Key)}";
         
         return $@"Relleno:
-          Sección A & C: {string.Join(",", Key)}
-          Sección B: {string.Join(",", alternativeKey)}
+  Sección A & C: {string.Join(",", Key)}
+  Sección B: {string.Join(",", alternativeKey)}
         ";
     }
 
@@ -63,28 +63,44 @@ public class DrumPlayer : MonoBehaviour
             MAX_NEGRAS = 32;
         else
             MAX_NEGRAS = 24;
+
+        MAX_NEGRAS *= 2;
     }
 
     private void SetAlternativeFilling()
     {
         alternativeKey = beatGenerator.GenerateBeat(metric);
+        invertedAlternativeKey = InvertArray(alternativeKey);
     }
 
     private void CheckAlternativeFilling()
     {
-        if (alternativeKey != null)
-            Key = alternativeKey;
+        loops += 1;
+        if (alternativeKey != null && loops != 5)
+        {
+            List<int> tempKey = currentKey;
+            currentKey = alternativeKey;
+            alternativeKey = tempKey;
+
+            tempKey = invertedKey;
+            invertedKey = invertedAlternativeKey;
+            invertedAlternativeKey = tempKey;
+
+        } else if (loops == 5)
+            loops = 0;
     }
 
-    private void InvertKeyArray(List<int> list)
+    private List<int> InvertArray(List<int> list)
     {
-        invertedKey = new List<int>(list);
+        List<int> tempKey = new List<int>(list);
         int amount = Random.Range(0, list.Count);
         for (int i = 0; i < amount; i++)
         {
             int pos = Random.Range(0, list.Count);
-            invertedKey[pos] = (list[pos] == 1) ? 0 : 1;
+            tempKey[pos] = (list[pos] == 1) ? 0 : 1;
         }
+
+        return tempKey;
     }
 
     private bool EvalDrumHit => currentKey[ticksPlayed % currentKey.Count] == 1;
@@ -94,11 +110,6 @@ public class DrumPlayer : MonoBehaviour
     public List<int> Key
     {
         get { return currentKey; }
-        set
-        {
-            mainKey = currentKey;
-            currentKey = value;
-            InvertKeyArray(value);
-        }
+        set { currentKey = value; }
     }
 }

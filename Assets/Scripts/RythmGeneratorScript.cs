@@ -17,7 +17,7 @@ public class RythmGeneratorScript : MonoBehaviour
     private int initialNote;
     private string[] majorScale;
 
-    public List<Rythm> GetRythmList(int metric, double promedioTiempos = 0, int notaInicial = -1)
+    public List<Rythm> GetRythmList(int metric, int notaInicial = -1, double promedioTiempos = 0)
     {
         tiemposCompletos = new List<int>{2, 4};
         if (metric == 4) {
@@ -32,9 +32,11 @@ public class RythmGeneratorScript : MonoBehaviour
             SetupTiemposCompletos(promedioTiempos);
 
         if (notaInicial == -1)
+        {
             initialNote = Random.Range(0, 12);
+            utils = new Utils(initialNote);
+        }
 
-        utils = new Utils(initialNote);
 
         MAX_NEGRAS = CANT_COMPACES * NEGRAS_POR_COMPAS;
         compas1 = utils.GenerateRandomKey(CANT_COMPACES/2, tiemposCompletos);
@@ -144,7 +146,6 @@ public class RythmGeneratorScript : MonoBehaviour
     {
         if (previousChord == null)
             return;
-
 
         // If last chord is weak and is dominant
         if (previousChord.function == Function.Dominante
